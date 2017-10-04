@@ -1,6 +1,6 @@
 package com.wujunwen.Repository;
 
-import com.wujunwen.Entity.Girl;
+import com.wujunwen.Domain.Girl;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

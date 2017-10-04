@@ -1,8 +1,10 @@
-package com.wujunwen.Entity;
+package com.wujunwen.Domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import java.util.DoubleSummaryStatistics;
 
 /**
  * Created by Keven on 2017/10/3.
@@ -13,7 +15,18 @@ public class Girl {
     @GeneratedValue
     private Integer id;
     private String cupSize;
+    @Min(value = 18, message = "未成年少女禁止入内")
     private Integer age;
+
+    private Double money;
+
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(Double money) {
+        this.money = money;
+    }
 
     public Girl() {
     }
@@ -40,5 +53,15 @@ public class Girl {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Girl{" +
+                "id=" + id +
+                ", cupSize='" + cupSize + '\'' +
+                ", age=" + age +
+                ", money=" + money +
+                '}';
     }
 }

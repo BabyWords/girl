@@ -1,10 +1,15 @@
 package com.wujunwen.Controller;
 
-import com.wujunwen.Entity.Girl;
+import com.wujunwen.Domain.Girl;
 import com.wujunwen.Repository.GirlRepository;
+import com.wujunwen.Service.GirlService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -13,8 +18,13 @@ import java.util.List;
 @RestController
 public class GirlController {
 
+    private final static Logger logger= LoggerFactory.getLogger(GirlController.class);
+
     @Autowired
     private GirlRepository girlRepository;
+
+    @Autowired
+    private GirlService girlService;
 
     /**
      * 查询所有女生列表
@@ -23,22 +33,23 @@ public class GirlController {
      */
     @GetMapping(value = "/girls")
     public List<Girl> girlList() {
+        logger.info("girllist");
         return girlRepository.findAll();
     }
 
     /**
-     * 添加一个女生
+     * 添加一个女生,加入了验证
      *
-     * @param cupSize
-     * @param age
      * @return
      */
     @PostMapping(value = "/girls")
-    public Girl girlAdd(@RequestParam("cupSize") String cupSize,
-                        @RequestParam("age") Integer age) {
-        Girl girl = new Girl();
-        girl.setCupSize(cupSize);
-        girl.setAge(age);
+    public Girl girlAdd(@Valid Girl girl, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+            return null;
+        }
+        girl.setCupSize(girl.getCupSize());
+        girl.setAge(girl.getAge());
         return girlRepository.save(girl);
     }
 
@@ -72,6 +83,7 @@ public class GirlController {
 
     /**
      * 删除一个女生
+     *
      * @param id
      */
     @DeleteMapping(value = "/girls/{id}")
@@ -81,11 +93,20 @@ public class GirlController {
 
     /**
      * 根据自定义的接口来根据年龄查询
+     *
      * @param age
      * @return
      */
     @GetMapping(value = "/girls/age/{age}")
-    public List<Girl> girlListByAge(@PathVariable(value = "age") Integer age){
+    public List<Girl> girlListByAge(@PathVariable(value = "age") Integer age) {
         return girlRepository.findByAge(age);
+    }
+
+    /**
+     * 通过事务来同时执行两条插入数据
+     */
+    @PostMapping(value = "/girls/two")
+    public void girlTwo() {
+        girlService.insertTwo();
     }
 }
