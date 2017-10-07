@@ -1,6 +1,8 @@
 package com.wujunwen.Service;
 
 import com.wujunwen.Domain.Girl;
+import com.wujunwen.Enum.ResultEnum;
+import com.wujunwen.Exception.GirlException;
 import com.wujunwen.Repository.GirlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +28,21 @@ public class GirlService {
         girlB.setCupSize("B");
         girlB.setAge(19);
         girlRepository.save(girlB);
+    }
+
+    public void getAge(Integer id) throws Exception{
+        Girl girl = girlRepository.findOne(id);
+        Integer age = girl.getAge();
+        if (age < 10) {
+         //返回：你还在上小学code=100
+            throw new GirlException(ResultEnum.PRIMARY_SCHOOL);
+
+        } else if (age > 10 && age < 16) {
+            //返回：你还在上初中code=101
+            throw new GirlException(ResultEnum.MIDDLLE_SCHOOL);
+
+        }
+        //如果大于16岁，加钱
+        //...
     }
 }
