@@ -45,4 +45,13 @@ public class GirlService {
         //如果大于16岁，加钱
         //...
     }
+
+    /**
+     * 通过Id查询信息
+     * @param id
+     * @return
+     */
+    public Girl findOne(Integer id){
+        return girlRepository.findOne(id);
+    }
 }

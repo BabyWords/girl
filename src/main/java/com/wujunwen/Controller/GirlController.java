@@ -94,7 +94,6 @@ public class GirlController {
 
     /**
      * 根据自定义的接口来根据年龄查询
-     *
      * @param age
      * @return
      */
@@ -115,4 +114,6 @@ public class GirlController {
     public void getAge(@PathVariable("id") Integer id) throws Exception{
         girlService.getAge(id);
     }
+
+
 }

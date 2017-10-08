@@ -22,7 +22,6 @@ public class HttpAspect {
 
     @Pointcut("execution(public * com.wujunwen.Controller.GirlController.*(..))")
     public void log() {
-
     }
 
     @Before("log()")
